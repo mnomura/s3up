@@ -1,0 +1,15 @@
+#!/bin/bash
+from=$1
+to=$2
+contentType=`file -bi ${from} | cut -d";" -f1`
+bucket=`echo ${to} | cut -d "/" -f2`
+path=`echo ${to} | sed -e "s/\/${bucket}//"`
+dateValue=`date -R`
+stringToSign="PUT\n\n${contentType}\n${dateValue}\n$2"
+signature=`echo -en ${stringToSign} | openssl sha1 -hmac ${AWS_SECRET_ACCESS_KEY} -binary | base64`
+curl -# -X PUT --data @${from} \
+  -H "Host: ${bucket}.s3-${AWS_REGION}.amazonaws.com" \
+  -H "Date: ${dateValue}" \
+  -H "Content-Type: ${contentType}" \
+  -H "Authorization: AWS ${AWS_ACCESS_KEY_ID}:${signature}" \
+  https://${bucket}.s3-${AWS_REGION}.amazonaws.com${path}
