@@ -8,3 +8,9 @@ simple s3 file upload script.
 ```shell
 curl -L https://raw.github.com/kozaki/s3up/master/install.sh | bash
 ````
+
+ssl certificate error.
+
+```shell
+curl -L --insecure https://raw.github.com/kozaki/s3up/master/insecure-install.sh | bash
+````
