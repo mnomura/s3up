@@ -1,4 +1,5 @@
 #!/bin/bash
+source ~/.s3up
 from=$1
 to=$2
 contentType=`file -bi ${from} | cut -d";" -f1`
